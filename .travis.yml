@@ -7,3 +7,9 @@ node_js:
 branches:
   only:
     - master
+
+deploy:
+  provider: heroku
+  app: imleykin-weather-app
+  api_key:
+    secure: d423a984-b3a8-4de6-b867-f8fa16f83114

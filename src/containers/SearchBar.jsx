@@ -1,6 +1,9 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
 import './SearchBar.scss';
+import { typeSearchQuery } from '../actions/';
 
 // Imagine you have a list of languages that you'd like to autosuggest.
 const languages = [
@@ -105,6 +108,7 @@ class SearchBar extends React.Component {
   // Autosuggest will call this function every time you need to update suggestions.
   // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = ({ value }) => {
+    this.props.typeSearchQuery(value);
     this.setState({
       suggestions: getSuggestions(value),
     });
@@ -153,4 +157,18 @@ class SearchBar extends React.Component {
   }
 }
 
-export default SearchBar;
+const mapStateToProps = store => ({
+  store,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      typeSearchQuery,
+    },
+    dispatch
+  );
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchBar);

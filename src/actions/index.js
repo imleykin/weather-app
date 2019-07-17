@@ -1,26 +1,32 @@
-// import parser from 'xml2json';
+import { map, uniqBy } from 'lodash';
 
-export const typeSearchQuery = query => async dispatch => {
-  // const responseXML = await fetch(
-  //   `https://andruxnet-world-cities-v1.p.rapidapi.com/?query=${query}&searchby=city`,
-  //   {
-  //     method: 'GET', // или 'PUT'
-  //     // body: JSON.stringify(data), // data может быть типа `string` или {object}!
-  //     headers: {
-  //       'X-RapidAPI-Host': 'andruxnet-world-cities-v1.p.rapidapi.com',
-  //       'X-RapidAPI-Key': '0616673ff2msh919caea072a8d14p1b87a7jsn28a884ecb541',
-  //     },
-  //   }
-  // )
+export const updateSearchQuery = query => ({
+  type: 'SEARCH_QUERY_UPDATE',
+  payload: query,
+});
 
-  const responseXML = await fetch(
-    `http://autocomplete.travelpayouts.com/places2?term=${query}&types[]=city`
-  ).then(result => console.log(result.text));
+export const clearSuggestions = () => ({
+  type: 'SUGGESTIONS_CLEAR',
+  payload: [],
+});
 
-  // const responseJSON = parser(responseXML);
-  //   .then(str => new window.DOMParser().parseFromString(str, 'text/xml'));
-  //
-  // // console.log(response);
-  // const suggestions = response.getElementsByTagName('toponymName');
-  // console.log(suggestions);
+export const updateSuggestions = suggestions => ({
+  type: 'SUGGESTIONS_UPDATE',
+  payload: suggestions,
+});
+
+export const requstSuggestions = query => async dispatch => {
+  const response = await fetch(
+    `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${query}`,
+    {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
+        'X-RapidAPI-Key': '0616673ff2msh919caea072a8d14p1b87a7jsn28a884ecb541',
+      },
+    }
+  ).then(data => data.json());
+
+  const suggestions = map(uniqBy(response.data, 'city'), 'city');
+  dispatch(updateSuggestions(suggestions));
 };

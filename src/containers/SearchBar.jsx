@@ -3,144 +3,43 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Autosuggest from 'react-autosuggest';
 import './SearchBar.scss';
-import { typeSearchQuery } from '../actions/';
+import {
+  requstSuggestions,
+  updateSearchQuery,
+  clearSuggestions,
+} from '../actions/';
 
-// Imagine you have a list of languages that you'd like to autosuggest.
-const languages = [
-  {
-    name: 'C',
-    year: 1972,
-  },
-  {
-    name: 'C#',
-    year: 2000,
-  },
-  {
-    name: 'C++',
-    year: 1983,
-  },
-  {
-    name: 'Clojure',
-    year: 2007,
-  },
-  {
-    name: 'Elm',
-    year: 2012,
-  },
-  {
-    name: 'Go',
-    year: 2009,
-  },
-  {
-    name: 'Haskell',
-    year: 1990,
-  },
-  {
-    name: 'Java',
-    year: 1995,
-  },
-  {
-    name: 'JavaScript',
-    year: 1995,
-  },
-  {
-    name: 'Perl',
-    year: 1987,
-  },
-  {
-    name: 'PHP',
-    year: 1995,
-  },
-  {
-    name: 'Python',
-    year: 1991,
-  },
-  {
-    name: 'Ruby',
-    year: 1995,
-  },
-  {
-    name: 'Scala',
-    year: 2003,
-  },
-];
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
+const getSuggestionValue = suggestion => suggestion;
 
-  return inputLength === 0
-    ? []
-    : languages.filter(
-        lang => lang.name.toLowerCase().slice(0, inputLength) === inputValue
-      );
-};
-
-// When suggestion is clicked, Autosuggest needs to populate the input
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
-const getSuggestionValue = suggestion => suggestion.name;
-
-// Use your imagination to render suggestions.
-const renderSuggestion = suggestion => <div>{suggestion.name}</div>;
+const renderSuggestion = suggestion => <div>{suggestion}</div>;
 
 class SearchBar extends React.Component {
-  constructor() {
-    super();
-
-    // Autosuggest is a controlled component.
-    // This means that you need to provide an input value
-    // and an onChange handler that updates this value (see below).
-    // Suggestions also need to be provided to the Autosuggest,
-    // and they are initially empty because the Autosuggest is closed.
-    this.state = {
-      value: '',
-      suggestions: [],
-    };
-  }
-
   onChange = (event, { newValue }) => {
-    this.setState({
-      value: newValue,
-    });
+    this.props.updateSearchQuery(newValue);
   };
 
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = ({ value }) => {
-    this.props.typeSearchQuery(value);
-    this.setState({
-      suggestions: getSuggestions(value),
-    });
+    this.props.requstSuggestions(value);
   };
 
-  // Autosuggest will call this function every time you need to clear suggestions.
   onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
-
-  onSuggestionSelected = (event, options) => {
-    console.log(options);
+    this.props.clearSuggestions();
   };
 
   handleSearchSubmit = e => {
     e.preventDefault();
-    console.log(this.state.value);
+    console.log(this.props.query);
   };
 
   render() {
-    const { value, suggestions } = this.state;
+    const { query, suggestions } = this.props;
 
-    // Autosuggest will pass through all these props to the input.
     const inputProps = {
       placeholder: 'Type a city',
-      value,
+      value: query,
       onChange: this.onChange,
     };
 
-    // Finally, render it!
     return (
       <form onSubmit={this.handleSearchSubmit}>
         <Autosuggest
@@ -148,7 +47,6 @@ class SearchBar extends React.Component {
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
-          onSuggestionSelected={this.onSuggestionSelected}
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
@@ -157,14 +55,14 @@ class SearchBar extends React.Component {
   }
 }
 
-const mapStateToProps = store => ({
-  store,
-});
+const mapStateToProps = store => store.search;
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      typeSearchQuery,
+      requstSuggestions,
+      updateSearchQuery,
+      clearSuggestions,
     },
     dispatch
   );

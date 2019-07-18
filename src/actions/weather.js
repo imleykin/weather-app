@@ -22,6 +22,7 @@ export const requestWeather = requestedCity => async dispatch => {
     );
   } catch (e) {
     dispatch(requestWeatherFail("City wasn't found or other error occurred."));
+    console.log(e);
   }
 };
 

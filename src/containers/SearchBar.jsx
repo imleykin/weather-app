@@ -7,7 +7,9 @@ import {
   requstSuggestions,
   updateSearchQuery,
   clearSuggestions,
-} from '../actions/';
+} from '../actions/search';
+
+import { requestWeather } from '../actions/weather';
 
 const getSuggestionValue = suggestion => suggestion;
 
@@ -28,7 +30,8 @@ class SearchBar extends React.Component {
 
   handleSearchSubmit = e => {
     e.preventDefault();
-    console.log(this.props.query);
+    const { query } = this.props;
+    this.props.requestWeather(query);
   };
 
   render() {
@@ -41,16 +44,25 @@ class SearchBar extends React.Component {
     };
 
     return (
-      <form onSubmit={this.handleSearchSubmit}>
-        <Autosuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
-          renderSuggestion={renderSuggestion}
-          inputProps={inputProps}
-        />
-      </form>
+      <div className="container">
+        <form
+          className="app__search app-search"
+          onSubmit={this.handleSearchSubmit}
+        >
+          <Autosuggest
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+          />
+
+          <button type="submit" className="btn btn-primary app-search__button">
+            Show weather
+          </button>
+        </form>
+      </div>
     );
   }
 }
@@ -63,6 +75,7 @@ const mapDispatchToProps = dispatch =>
       requstSuggestions,
       updateSearchQuery,
       clearSuggestions,
+      requestWeather,
     },
     dispatch
   );

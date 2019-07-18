@@ -1,4 +1,5 @@
 import { map, uniqBy } from 'lodash';
+import axios from 'axios';
 
 export const updateSearchQuery = query => ({
   type: 'SEARCH_QUERY_UPDATE',
@@ -16,17 +17,16 @@ export const updateSuggestions = suggestions => ({
 });
 
 export const requstSuggestions = query => async dispatch => {
-  const response = await fetch(
+  const response = await axios.get(
     `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${query}`,
     {
-      method: 'GET',
       headers: {
         'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com',
         'X-RapidAPI-Key': '0616673ff2msh919caea072a8d14p1b87a7jsn28a884ecb541',
       },
     }
-  ).then(data => data.json());
+  );
 
-  const suggestions = map(uniqBy(response.data, 'city'), 'city');
+  const suggestions = map(uniqBy(response.data.data, 'city'), 'city');
   dispatch(updateSuggestions(suggestions));
 };

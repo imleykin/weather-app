@@ -1,18 +1,18 @@
-const initialStore = {
+const initialState = {
   query: '',
   suggestions: [],
 };
 
-const searchReducer = (store = initialStore, action) => {
+const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SEARCH_QUERY_UPDATE':
-      return { ...store, query: action.payload };
+      return { ...state, query: action.payload };
     case 'SUGGESTIONS_CLEAR':
-      return { ...store, suggestions: [] };
+      return { ...state, suggestions: [] };
     case 'SUGGESTIONS_UPDATE':
-      return { ...store, suggestions: action.payload };
+      return { ...state, suggestions: action.payload };
     default:
-      return store;
+      return state;
   }
 };
 

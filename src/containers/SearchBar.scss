@@ -1,13 +1,18 @@
-.react-autosuggest__container {
-  position: relative;
+.app-search {
   margin: 0 auto;
   max-width: 800px;
+  display: flex;
+  align-items: center;
+}
+.react-autosuggest__container {
+  position: relative;
+  flex-grow: 1
 }
 
 .react-autosuggest__input {
   width: 100%;
   // width: 240px;
-  height: 30px;
+  height: 52px;
   padding: 10px 20px;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;

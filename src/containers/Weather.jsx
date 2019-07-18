@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import './Weather.sass';
-import '../style.sass';
 
 class Weather extends React.Component {
   renderLoadingSpinner = () => (

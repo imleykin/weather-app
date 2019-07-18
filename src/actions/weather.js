@@ -7,23 +7,34 @@ const ROOT_URL = `https://api.openweathermap.org/data/2.5/weather?appid=${API_KE
 export const requestWeather = requestedCity => async dispatch => {
   dispatch(requestWeatherStart());
 
-  const response = await axios({
-    url: `${ROOT_URL}&q=${requestedCity}`,
-    method: 'get',
-  });
+  try {
+    const response = await axios({
+      url: `${ROOT_URL}&q=${requestedCity}`,
+      method: 'get',
+    });
 
-  const { name: city } = response.data;
+    const { name: city } = response.data;
 
-  dispatch(
-    requestWeatherSuccess({
-      city,
-    })
-  );
+    dispatch(
+      requestWeatherSuccess({
+        city,
+      })
+    );
+  } catch (e) {
+    dispatch(
+      requestWeatherFail("City wasn't found or anouther error occured.")
+    );
+  }
 };
 
 export const requestWeatherSuccess = data => ({
   type: 'REQUEST_WEATHER_SUCCESS',
   payload: data,
+});
+
+export const requestWeatherFail = message => ({
+  type: 'REQUEST_WEATHER_FAIL',
+  payload: message,
 });
 
 export const requestWeatherStart = () => ({

@@ -23,8 +23,11 @@ class Weather extends React.Component {
     </div>
   );
 
-  renderCurrentWeather = () => {
-    const { city } = this.props;
+  renderWeather = () => {
+    const { city, error } = this.props;
+    if (error) {
+      return <div className="app__weather app-weather">{error}</div>;
+    }
 
     if (!city) {
       return null;
@@ -42,7 +45,7 @@ class Weather extends React.Component {
     console.log(isLoading);
     return (
       <div className="container">
-        {isLoading ? this.renderLoadingSpinner() : this.renderCurrentWeather()}
+        {isLoading ? this.renderLoadingSpinner() : this.renderWeather()}
       </div>
     );
   }

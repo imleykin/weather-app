@@ -1,6 +1,7 @@
 const initialState = {
   city: '',
   isLoading: false,
+  error: '',
 };
 
 const weatherReducer = (state = initialState, action) => {
@@ -9,13 +10,21 @@ const weatherReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+        error: '',
       };
     case 'REQUEST_WEATHER_SUCCESS':
       const { city } = action.payload;
       return {
         ...state,
         isLoading: false,
+        error: '',
         city,
+      };
+    case 'REQUEST_WEATHER_FAIL':
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       };
     default:
       return state;

@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import './Weather.sass';
+import { requestWeather } from '../actions/weather';
 
 class Weather extends React.Component {
   renderLoadingSpinner = () => (
@@ -25,6 +26,7 @@ class Weather extends React.Component {
 
   renderWeather = () => {
     const { city, error } = this.props;
+
     if (error) {
       return <div className="app__weather app-weather">{error}</div>;
     }
@@ -40,9 +42,16 @@ class Weather extends React.Component {
     );
   };
 
+  componentDidMount() {
+    const { city } = this.props.match.params;
+    const { requestWeather } = this.props;
+    if (city) {
+      requestWeather(city);
+    }
+  }
+
   render() {
     const { isLoading } = this.props;
-    console.log(isLoading);
     return (
       <div className="container">
         {isLoading ? this.renderLoadingSpinner() : this.renderWeather()}
@@ -52,7 +61,9 @@ class Weather extends React.Component {
 }
 
 const mapStateToProps = store => store.weather;
-const mapDispatchToProps = dispatch => bindActionCreators({});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ requestWeather }, dispatch);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

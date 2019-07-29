@@ -8,8 +8,8 @@ import {
   updateSearchQuery,
   clearSuggestions,
 } from '../actions/search';
-
 import { requestWeather } from '../actions/weather';
+import { withRouter } from 'react-router-dom';
 
 const getSuggestionValue = suggestion => suggestion;
 
@@ -32,6 +32,7 @@ class SearchBar extends React.Component {
     e.preventDefault();
     const { query } = this.props;
     this.props.requestWeather(query);
+    this.props.history.push(`/${query}`);
   };
 
   render() {
@@ -82,4 +83,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SearchBar);
+)(withRouter(SearchBar));

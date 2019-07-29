@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import './Weather.sass';
 import { requestWeather } from '../actions/weather';
+import { capitalize } from 'lodash';
 
 class Weather extends React.Component {
   renderLoadingSpinner = () => (
@@ -27,7 +28,7 @@ class Weather extends React.Component {
   renderWeather = () => {
     const { error } = this.props;
 
-    if (this.props.error) {
+    if (error) {
       return <div className="app__weather app-weather">{error}</div>;
     }
 
@@ -42,23 +43,25 @@ class Weather extends React.Component {
       windSpeed,
     } = this.props.weather;
 
-    if (!city) {
+    if (!city || !temp) {
       return null;
     }
 
     return (
       <div className="app__weather app-weather">
-        <p>{city}</p>
+        <p className="app-weather__city">{city}</p>
         <img
+          className="app-weather__icon"
           alt="weather icon"
           src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
         />
-        <p>{description}</p>
-        <p>{temp}°</p>
-        <p>pressure: {pressure}hPa</p>
-        <p>humidity: {humidity}%</p>
-        <p>visibility: {visibility}</p>
-        <p>wind: {windSpeed} m/s</p>
+        <p className="app-weather__temp">
+          {temp}°, {capitalize(description)}
+        </p>
+        {pressure ? <p>pressure: {pressure}hPa</p> : null}
+        {humidity ? <p>humidity: {humidity}%</p> : null}
+        {visibility ? <p>visibility: {visibility} meters</p> : null}
+        {windSpeed ? <p>wind: {windSpeed} m/s</p> : null}
       </div>
     );
   };

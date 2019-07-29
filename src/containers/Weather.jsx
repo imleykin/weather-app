@@ -25,11 +25,22 @@ class Weather extends React.Component {
   );
 
   renderWeather = () => {
-    const { city, error } = this.props;
+    const { error } = this.props;
 
-    if (error) {
+    if (this.props.error) {
       return <div className="app__weather app-weather">{error}</div>;
     }
+
+    const {
+      city,
+      icon,
+      description,
+      temp,
+      pressure,
+      humidity,
+      visibility,
+      windSpeed,
+    } = this.props.weather;
 
     if (!city) {
       return null;
@@ -37,7 +48,17 @@ class Weather extends React.Component {
 
     return (
       <div className="app__weather app-weather">
-        {`Погода в городе `} {city}
+        <p>{city}</p>
+        <img
+          alt="weather icon"
+          src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
+        />
+        <p>{description}</p>
+        <p>{temp}</p>
+        <p>pressure: {pressure}</p>
+        <p>humidity: {humidity}</p>
+        <p>visibility: {visibility}</p>
+        <p>wind: {windSpeed}</p>
       </div>
     );
   };

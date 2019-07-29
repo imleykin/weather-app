@@ -15,11 +15,26 @@ export const requestWeather = requestedCity => async dispatch => {
 
     console.log(response.data);
 
-    const { name: city } = response.data;
+    const {
+      name: city,
+      weather: [{ description, icon }],
+      main: { temp, pressure, humidity },
+      visibility,
+      wind: { speed: windSpeed },
+    } = response.data;
+
+    console.log(`hum: ${humidity}`);
 
     dispatch(
       requestWeatherSuccess({
         city,
+        icon,
+        description,
+        temp,
+        pressure,
+        humidity,
+        visibility,
+        windSpeed,
       })
     );
   } catch (e) {

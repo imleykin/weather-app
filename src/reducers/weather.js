@@ -1,5 +1,5 @@
 const initialState = {
-  city: '',
+  weather: {},
   isLoading: false,
   error: '',
 };
@@ -13,12 +13,11 @@ const weatherReducer = (state = initialState, action) => {
         error: '',
       };
     case 'REQUEST_WEATHER_SUCCESS':
-      const { city } = action.payload;
       return {
         ...state,
         isLoading: false,
         error: '',
-        city,
+        weather: action.payload,
       };
     case 'REQUEST_WEATHER_FAIL':
       return {

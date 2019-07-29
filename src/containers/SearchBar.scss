@@ -3,6 +3,8 @@
   max-width: 800px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .react-autosuggest__container {
   position: relative;

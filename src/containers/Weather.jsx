@@ -7,29 +7,17 @@ import { capitalize } from 'lodash';
 
 class Weather extends React.Component {
   renderLoadingSpinner = () => (
-    <div className="app__weather app-weather">
-      {'loading...'}
-      <div className="preloader-wrapper active">
-        <div className="spinner-layer spinner-blue-only">
-          <div className="circle-clipper left">
-            <div className="circle" />
-          </div>
-          <div className="gap-patch">
-            <div className="circle" />
-          </div>
-          <div className="circle-clipper right">
-            <div className="circle" />
-          </div>
-        </div>
-      </div>
-    </div>
+    <div
+      className="app-weather__spinner spinner-border text-primary"
+      role="status"
+    />
   );
 
   renderWeather = () => {
     const { error } = this.props;
 
     if (error) {
-      return <div className="app__weather app-weather">{error}</div>;
+      return <div className="app-weather__error">{error}</div>;
     }
 
     const {
@@ -48,7 +36,7 @@ class Weather extends React.Component {
     }
 
     return (
-      <div className="app__weather app-weather">
+      <>
         <p className="app-weather__city">{city}</p>
         <img
           className="app-weather__icon"
@@ -62,7 +50,7 @@ class Weather extends React.Component {
         {humidity ? <p>humidity: {humidity}%</p> : null}
         {visibility ? <p>visibility: {visibility} meters</p> : null}
         {windSpeed ? <p>wind: {windSpeed} m/s</p> : null}
-      </div>
+      </>
     );
   };
 
@@ -78,7 +66,9 @@ class Weather extends React.Component {
     const { isLoading } = this.props;
     return (
       <div className="container">
-        {isLoading ? this.renderLoadingSpinner() : this.renderWeather()}
+        <div className="app__weather app-weather">
+          {isLoading ? this.renderLoadingSpinner() : this.renderWeather()}
+        </div>
       </div>
     );
   }

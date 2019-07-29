@@ -54,11 +54,11 @@ class Weather extends React.Component {
           src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
         />
         <p>{description}</p>
-        <p>{temp}</p>
-        <p>pressure: {pressure}</p>
-        <p>humidity: {humidity}</p>
+        <p>{temp}°</p>
+        <p>pressure: {pressure}hPa</p>
+        <p>humidity: {humidity}%</p>
         <p>visibility: {visibility}</p>
-        <p>wind: {windSpeed}</p>
+        <p>wind: {windSpeed} m/s</p>
       </div>
     );
   };

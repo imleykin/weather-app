@@ -41,7 +41,7 @@ class Weather extends React.Component {
       humidity,
       visibility,
       windSpeed,
-    } = this.props.weather;
+    } = this.props.data;
 
     if (!city || !temp) {
       return null;

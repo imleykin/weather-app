@@ -15,7 +15,7 @@ const getSuggestionValue = suggestion => suggestion;
 
 const renderSuggestion = suggestion => <div>{suggestion}</div>;
 
-class SearchBar extends React.Component {
+export class SearchBar extends React.Component {
   onChange = (event, { newValue }) => {
     this.props.updateSearchQuery(newValue);
   };
